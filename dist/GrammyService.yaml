@@ -1,0 +1,146 @@
+openapi: 3.0.3
+info:
+  title: Grammy service REST endpoints
+  description: Grammy service REST endpoints for SOA Lab 1
+  version: 1.0.0
+#servers:
+#  - url: 'https://localhost:45392/api/v1'
+paths:
+  /band/{band-id}/singles/add:
+#    Post или Put запрос, как выглядит singl для группы, если его нет в модели
+    post:
+      summary: Add a new single to the specified music band
+      description: Add a new single to the specified music band
+      parameters:
+        - name: band-id
+          in: path
+          required: true
+          description: Music band id to add single
+          schema:
+            type: integer
+            format: int64
+            nullable: false
+            minimum: 0
+            exclusiveMinimum: true
+            example: 1
+      tags:
+        - Grammy
+      responses:
+        '200':
+          description: Returns the music band that was just added a single to
+          content:
+            application/xml:
+              schema:
+                $ref: './MusicBandService.yaml#/components/schemas/MusicBandsAllFieldsSchema'
+        '400':
+          description: Invalid parameters supplied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 400
+                  message:
+                    type: string
+                    example: Invalid parameters supplied
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2022-09-19T00:00:09Z
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 500
+                  message:
+                    type: string
+                    example: Internal server error
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2022-09-19T00:00:09Z
+        default:
+          description: Returns error code, message and time in case of error
+          content:
+            application/json:
+              schema:
+                $ref: './MusicBandService.yaml#/components/schemas/Error'
+  /band/{band-id}/reward/{genre}:
+    post:
+      summary: Awarding the band as the best in the specified genre
+      description: Awarding the band as the best in the specified genre
+      parameters:
+        - name: band-id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 0
+            exclusiveMinimum: true
+            example: 1
+        - name: genre
+          in: path
+          required: true
+          schema:
+            $ref: './MusicBandService.yaml#/components/schemas/MusicGenre'
+      tags:
+        - Grammy
+      responses:
+        '200':
+          description: Returns the music band that was just awarded
+          content:
+            application/xml:
+              schema:
+                $ref: './MusicBandService.yaml#/components/schemas/MusicBandAllFieldsSchema'
+        '400':
+          description: Invalid parameters supplied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 400
+                  message:
+                    type: string
+                    example: Invalid parameters supplied
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2022-09-19T00:00:09Z
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 500
+                  message:
+                    type: string
+                    example: Internal server error
+                  time:
+                    type: string
+                    format: date-time
+                    example: 2022-09-19T00:00:09Z
+        default:
+          description: Returns error code, message and time in case of error
+          content:
+            application/json:
+              schema:
+                $ref: './MusicBandService.yaml#/components/schemas/Error'
