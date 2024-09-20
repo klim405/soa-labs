@@ -380,22 +380,6 @@ paths:
       responses:
         '204':
           description: The music band was successfully deleted
-          content:
-            application/xml:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                    format: int32
-                    example: 204
-                  message:
-                    type: string
-                    example: The music band was successfully deleted
-                  time:
-                    type: string
-                    format: date-time
-                    example: 2022-09-19T00:00:09Z
         '400':
           description: Invalid id value
           content:
@@ -440,7 +424,7 @@ paths:
                 $ref: '#/components/schemas/Error'
 
   # Extra operations
-  /musicBands/average-numberOfParticipants:
+  /musicBands/average:
     get:
       summary: Get average number of participants for all music bands
       description: Get average number of participants for all music bands
@@ -453,7 +437,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: number
+                $ref: '#/components/schemas/Average'
         '500':
           description: Internal server error
           content:
@@ -478,7 +462,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /musicBands/nameGroups:
+  /musicBands/groups:
     get:
       summary: Get the number of repetitions for each Name value
       description: Get the number of repetitions for each Name value
@@ -491,10 +475,7 @@ paths:
           content:
             application/xml:
                 schema:
-                  type: array
-                  items:
-                    type: integer
-                    format: int32
+                  $ref: '#/components/schemas/Group'
         '500':
           description: Internal server error
           content:
@@ -519,7 +500,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /musicBands/bandByNameSubstring/{nameSubstring}:
+  /musicBands/filter/{nameSubstring}:
     get:
       summary: Return an array of music bands whose name field value starts with the specified substring
       description: Return an array of music bands whose name field value starts with the specified substring
@@ -530,7 +511,8 @@ paths:
           required: true
           description: Substring of the name to search
           schema:
-            $ref: '#/components/schemas/MusicBandsAllFieldsSchema'
+            type: string
+            example: My lovely
       tags:
         - Catalog
       responses:
@@ -539,19 +521,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                    format: int32
-                    example: 204
-                  message:
-                    type: string
-                    example: Found music bands
-                  time:
-                    type: string
-                    format: date-time
-                    example: 2022-09-19T00:00:09Z
+                $ref: '#/components/schemas/MusicBandAllFieldsSchema'
         '400':
           description: Invalid name substring value
           content:
@@ -689,6 +659,21 @@ components:
         totalCound:
           type: integer
           default: null
+    Group:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: false
+          minLength: 1
+          example: My lovely music band
+        number:
+          type: integer
+          format: int32
+          example: 1
+    Average:
+        type: integer
+        example: 20
     Error:
       type: object
       required:
