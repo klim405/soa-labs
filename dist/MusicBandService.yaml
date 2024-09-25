@@ -405,8 +405,6 @@ components:
         detail:
           type: string
           example: Something went wrong...
-
-
     MusicGenre :
       type: string
       enum:
@@ -438,38 +436,34 @@ components:
       properties:
         name:
           type: string
-          nullable: false
           minLength: 1
           example: My lovely music band
         coordinates:
           $ref: '#/components/schemas/Coordinates'
           example:
             $ref: '#/components/schemas/Coordinates'
-          nullable: false
         numberOfParticipants:
           type: integer
           format: int32
-          nullable: true
           minimum: 0
           example: 70
         description:
           type: string
-          nullable: true
           example: Description of my lovely music band
         genre:
           $ref: '#/components/schemas/MusicGenre'
           example:
             $ref: '#/components/schemas/MusicGenre'
-          nullable: false
         label:
           $ref: '#/components/schemas/Label'
-          nullable: true
+        required:
+          - name
+          - coordinates
+          - genre
     MusicBandAllFieldsSchema:
       allOf:
-        - type: object
-          required:
-            - id
-          properties:
+        - $ref: '#/components/schemas/MusicBandExtraFieldSchema'
+        - properties:
             id:
               type: integer
               format: int64
@@ -480,9 +474,9 @@ components:
             date:
               type: string
               format: date-time
-              nullable: false
               example: 2022-09-19T00:00:10Z
-        - $ref: '#/components/schemas/MusicBandExtraFieldSchema'
+          required:
+            - id
     MusicBandsAllFieldsSchema:
       type: object
       properties:
