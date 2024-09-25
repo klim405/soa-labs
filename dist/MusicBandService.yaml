@@ -72,7 +72,7 @@ paths:
             minimum: 1
         - name: nameSubstring
           in: path
-          required: true
+          required: false
           description: Substring of the name to search
           schema:
             type: string
@@ -101,7 +101,7 @@ paths:
         '500':
           description: Internal server error
           content:
-            application/json:
+            application/xml:
               schema:
                 $ref: '#/components/schemas/HTTPInternalError'
     post:
@@ -115,7 +115,7 @@ paths:
         content:
           application/xml:
             schema:
-              $ref: '#/components/schemas/MusicBandExtraFieldSchema'
+              $ref: '#/components/schemas/MusicBandCreationSchema'
       responses:
         '200':
           description: Returns the music band that was just added
@@ -154,7 +154,6 @@ paths:
           schema:
             type: integer
             format: int64
-            nullable: false
             minimum: 0
             exclusiveMinimum: true
             example: 1
@@ -203,7 +202,6 @@ paths:
           schema:
             type: integer
             format: int64
-            nullable: false
             minimum: 0
             exclusiveMinimum: true
             example: 1
@@ -214,7 +212,7 @@ paths:
         content:
           application/xml:
             schema:
-              $ref: '#/components/schemas/MusicBandExtraFieldSchema'
+              $ref: '#/components/schemas/MusicBandCreationSchema'
       responses:
         '200':
           description: Returns an updated music band
@@ -258,7 +256,6 @@ paths:
           schema:
             type: integer
             format: int64
-            nullable: false
             minimum: 0
             exclusiveMinimum: true
             example: 1
@@ -293,7 +290,7 @@ paths:
                 $ref: '#/components/schemas/HTTPInternalError'
 
   # Extra operations
-  /musicBands/average:
+  /musicBands/statictic:
     get:
       summary: Get average number of participants for all music bands
       description: Get average number of participants for all music bands
@@ -306,7 +303,7 @@ paths:
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/Average'
+                $ref: '#/components/schemas/Statistic'
         '400':
           description: Invalid query param
           content:
@@ -365,6 +362,7 @@ components:
         detail:
           type: string
           example: Invalid request message framing, or deceptive request routing.
+
     HTTPValidationError:
       title: HTTPValidationError
       type: object
@@ -375,6 +373,7 @@ components:
         detail:
           type: string
           example: Validation error
+
     HTTPNotFoundError:
       title: HTTPNotFoundError
       type: object
@@ -385,6 +384,7 @@ components:
         detail:
           type: string
           example: Object not found
+
     HTTPForbiddenError:
       title: HTTPForbiddenError
       type: object
@@ -395,6 +395,7 @@ components:
         detail:
           type: string
           example: Permission denied
+
     HTTPInternalError:
       title: HTTPInternalError
       type: object
@@ -405,6 +406,7 @@ components:
         detail:
           type: string
           example: Something went wrong...
+
     MusicGenre :
       type: string
       enum:
@@ -412,26 +414,32 @@ components:
         - RAP
         - POST_ROCK
         - PUNK_ROCK
-      nullable: true
       example: ROCK
+
     Label:
       type: object
       properties:
         name:
           type: string
           example: National
+
     Coordinates:
       type: object
       properties:
         x:
           type: number
           format: float
-          nullable: false
           minimum: -530
+          example: 10
         y:
           type: number
           format: double
-    MusicBandExtraFieldSchema:
+          example: 12
+      required:
+        - x
+        - y
+
+    MusicBandCreationSchema:
       type: object
       properties:
         name:
@@ -440,8 +448,6 @@ components:
           example: My lovely music band
         coordinates:
           $ref: '#/components/schemas/Coordinates'
-          example:
-            $ref: '#/components/schemas/Coordinates'
         numberOfParticipants:
           type: integer
           format: int32
@@ -452,17 +458,16 @@ components:
           example: Description of my lovely music band
         genre:
           $ref: '#/components/schemas/MusicGenre'
-          example:
-            $ref: '#/components/schemas/MusicGenre'
         label:
           $ref: '#/components/schemas/Label'
-        required:
-          - name
-          - coordinates
-          - genre
+      required:
+        - name
+        - coordinates
+        - genre
+
     MusicBandAllFieldsSchema:
       allOf:
-        - $ref: '#/components/schemas/MusicBandExtraFieldSchema'
+        - $ref: '#/components/schemas/MusicBandCreationSchema'
         - properties:
             id:
               type: integer
@@ -477,6 +482,7 @@ components:
               example: 2022-09-19T00:00:10Z
           required:
             - id
+
     MusicBandsAllFieldsSchema:
       type: object
       properties:
@@ -486,41 +492,52 @@ components:
             $ref: '#/components/schemas/MusicBandAllFieldsSchema'
         page:
           type: integer
-          default: null
+          example: 0
+          default: 0
         pageSize:
           type: integer
-          default: null
+          example: 20
+          default: 20
         totalPages:
           type: integer
-          default: null
-        totalCound:
+          example: 1
+          default: 1
+        totalCount:
           type: integer
-          default: null
+          example: 1
 
     Group:
+      title: Group
       type: object
       properties:
         name:
           type: string
-          nullable: false
           minLength: 1
           example: My lovely music band
         number:
           type: integer
           format: int32
           example: 1
+      required:
+        - name
 
     Groups:
+      title: Groups
       type: object
       properties:
-        groups:
-          title: groups
+        Group:
           type: array
           items:
             $ref: '#/components/schemas/Group'
           example:
-            $ref: '#/components/schemas/Group'
+            - name: XXX
+              number: 0
+            - name: YYY
+              number: 1
 
-    Average:
-        type: integer
-        example: 20
+    Statistic:
+      type: object
+      properties:
+        average:
+          type: integer
+          example: 20

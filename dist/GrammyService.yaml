@@ -7,7 +7,6 @@ info:
 #  - url: 'https://localhost:45392/api/v1'
 paths:
   /band/{band-id}/singles/add:
-#    Post или Put запрос, как выглядит singl для группы, если его нет в модели
     post:
       summary: Add a new single to the specified music band
       description: Add a new single to the specified music band
@@ -33,47 +32,29 @@ paths:
               schema:
                 $ref: './MusicBandService.yaml#/components/schemas/MusicBandsAllFieldsSchema'
         '400':
-          description: Invalid parameters supplied
+          description: Invalid query param
           content:
-            application/json:
+            application/xml:
               schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                    format: int32
-                    example: 400
-                  message:
-                    type: string
-                    example: Invalid parameters supplied
-                  time:
-                    type: string
-                    format: date-time
-                    example: 2022-09-19T00:00:09Z
+                $ref: './MusicBandService.yaml#/components/schemas/HTTPBadRequestError'
+        '404':
+          description: Object not found
+          content:
+            application/xml:
+              schema:
+                $ref: './MusicBandService.yaml#/components/schemas/HTTPNotFoundError'
+        '422':
+          description: Validation error
+          content:
+            application/xml:
+              schema:
+                $ref: './MusicBandService.yaml#/components/schemas/HTTPValidationError'
         '500':
           description: Internal server error
           content:
-            application/json:
+            application/xml:
               schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                    format: int32
-                    example: 500
-                  message:
-                    type: string
-                    example: Internal server error
-                  time:
-                    type: string
-                    format: date-time
-                    example: 2022-09-19T00:00:09Z
-        default:
-          description: Returns error code, message and time in case of error
-          content:
-            application/json:
-              schema:
-                $ref: './MusicBandService.yaml#/components/schemas/Error'
+                $ref: './MusicBandService.yaml#/components/schemas/HTTPInternalError'
   /band/{band-id}/reward/{genre}:
     post:
       summary: Awarding the band as the best in the specified genre
@@ -103,44 +84,26 @@ paths:
               schema:
                 $ref: './MusicBandService.yaml#/components/schemas/MusicBandAllFieldsSchema'
         '400':
-          description: Invalid parameters supplied
+          description: Invalid query param
           content:
-            application/json:
+            application/xml:
               schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                    format: int32
-                    example: 400
-                  message:
-                    type: string
-                    example: Invalid parameters supplied
-                  time:
-                    type: string
-                    format: date-time
-                    example: 2022-09-19T00:00:09Z
+                $ref: './MusicBandService.yaml#/components/schemas/HTTPBadRequestError'
+        '404':
+          description: Object not found
+          content:
+            application/xml:
+              schema:
+                $ref: './MusicBandService.yaml#/components/schemas/HTTPNotFoundError'
+        '422':
+          description: Validation error
+          content:
+            application/xml:
+              schema:
+                $ref: './MusicBandService.yaml#/components/schemas/HTTPValidationError'
         '500':
           description: Internal server error
           content:
-            application/json:
+            application/xml:
               schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                    format: int32
-                    example: 500
-                  message:
-                    type: string
-                    example: Internal server error
-                  time:
-                    type: string
-                    format: date-time
-                    example: 2022-09-19T00:00:09Z
-        default:
-          description: Returns error code, message and time in case of error
-          content:
-            application/json:
-              schema:
-                $ref: './MusicBandService.yaml#/components/schemas/Error'
+                $ref: './MusicBandService.yaml#/components/schemas/HTTPInternalError'
