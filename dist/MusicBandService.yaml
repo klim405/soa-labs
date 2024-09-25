@@ -71,7 +71,7 @@ paths:
             default: 10
             minimum: 1
         - name: nameSubstring
-          in: path
+          in: query
           required: false
           description: Substring of the name to search
           schema:
