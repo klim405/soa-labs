@@ -30,7 +30,7 @@ paths:
           content:
             application/xml:
               schema:
-                $ref: './MusicBandService.yaml#/components/schemas/MusicBandsAllFieldsSchema'
+                $ref: './MusicBandService.yaml#/components/schemas/MusicBandReadSchema'
         '400':
           description: Invalid query param
           content:
@@ -82,7 +82,7 @@ paths:
           content:
             application/xml:
               schema:
-                $ref: './MusicBandService.yaml#/components/schemas/MusicBandAllFieldsSchema'
+                $ref: './MusicBandService.yaml#/components/schemas/MusicBandReadSchema'
         '400':
           description: Invalid query param
           content:

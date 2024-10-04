@@ -7,7 +7,7 @@ info:
 #  - url: 'https://localhost:45382/api/v1'
 paths:
   # CRUD
-  /musicBands:
+  /music-bands:
     get:
       summary: Get list of Music Bands
       description: Get list of Music Bands
@@ -85,7 +85,7 @@ paths:
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/MusicBandsAllFieldsSchema'
+                $ref: '#/components/schemas/PaginationMusicBandList'
         '400':
             description: Invalid query param
             content:
@@ -122,7 +122,7 @@ paths:
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/MusicBandAllFieldsSchema'
+                $ref: '#/components/schemas/MusicBandReadSchema'
         '400':
           description: Invalid query param
           content:
@@ -141,7 +141,7 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/HTTPInternalError'
-  /musicBands/{id}:
+  /music-bands/{id}:
     get:
       summary: Get existing music band by id
       description: Get existing music band by id
@@ -165,7 +165,7 @@ paths:
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/MusicBandAllFieldsSchema'
+                $ref: '#/components/schemas/MusicBandReadSchema'
         '400':
           description: Invalid query param
           content:
@@ -219,7 +219,7 @@ paths:
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/MusicBandAllFieldsSchema'
+                $ref: '#/components/schemas/MusicBandReadSchema'
         '400':
           description: Invalid query param
           content:
@@ -290,7 +290,7 @@ paths:
                 $ref: '#/components/schemas/HTTPInternalError'
 
   # Extra operations
-  /musicBands/statictic:
+  /music-bands/statictic:
     get:
       summary: Get average number of participants for all music bands
       description: Get average number of participants for all music bands
@@ -316,7 +316,7 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/HTTPInternalError'
-  /musicBands/groups:
+  /music-bands/groups:
     get:
       summary: Get the number of repetitions for each Name value
       description: Get the number of repetitions for each Name value
@@ -465,7 +465,7 @@ components:
         - coordinates
         - genre
 
-    MusicBandAllFieldsSchema:
+    MusicBandReadSchema:
       allOf:
         - $ref: '#/components/schemas/MusicBandCreationSchema'
         - properties:
@@ -483,13 +483,43 @@ components:
           required:
             - id
 
-    MusicBandsAllFieldsSchema:
+    MusicBandList:
+      title: MusicBandList
       type: object
       properties:
-        musicBandGetResponseDtos:
+        'MusicBandReadSchema':
           type: array
           items:
-            $ref: '#/components/schemas/MusicBandAllFieldsSchema'
+            $ref: '#/components/schemas/MusicBandReadSchema'
+          example:
+            - id: 1
+              date: 2022-09-19T00:00:10Z
+              name: My lovely music band
+              coordinates:
+                x: 10
+                y: 12
+              numberOfParticipants: 70
+              description: Description of my lovely music band
+              genre: ROCK
+              label:
+                name: National
+            - id: 2
+              date: 2022-10-19T00:00:10Z
+              name: My lovely music band 2
+              coordinates:
+                x: 15
+                y: 17
+              numberOfParticipants: 10
+              description: Description of my lovely music band
+              genre: ROCK
+              label:
+                name: National
+
+    PaginationMusicBandList:
+      type: object
+      properties:
+        items:
+          $ref: '#/components/schemas/MusicBandList'
         page:
           type: integer
           example: 0
