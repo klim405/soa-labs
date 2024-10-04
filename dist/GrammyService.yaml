@@ -8,7 +8,7 @@ info:
 paths:
   /band/{band-id}/singles/add:
     post:
-      summary: Add a new single to the specified music band
+      summary: Add a new single
       description: Add a new single to the specified music band
       parameters:
         - name: band-id
@@ -24,13 +24,19 @@ paths:
             example: 1
       tags:
         - Grammy
+      requestBody:
+        required: true
+        content:
+          application/xml:
+            schema:
+             $ref: '#/components/schemas/SingleCreation'
       responses:
         '200':
           description: Returns the music band that was just added a single to
           content:
             application/xml:
               schema:
-                $ref: './MusicBandService.yaml#/components/schemas/MusicBandReadSchema'
+                $ref: '#/components/schemas/Single'
         '400':
           description: Invalid query param
           content:
@@ -55,9 +61,10 @@ paths:
             application/xml:
               schema:
                 $ref: './MusicBandService.yaml#/components/schemas/HTTPInternalError'
+
   /band/{band-id}/reward/{genre}:
     post:
-      summary: Awarding the band as the best in the specified genre
+      summary: Awarding the band
       description: Awarding the band as the best in the specified genre
       parameters:
         - name: band-id
@@ -107,3 +114,38 @@ paths:
             application/xml:
               schema:
                 $ref: './MusicBandService.yaml#/components/schemas/HTTPInternalError'
+
+components:
+  schemas:
+    SingleCreation:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 32
+          example: Super single
+        description:
+          type: string
+          maxLength: 256
+          example: The best single
+      required:
+        - name
+
+    Single:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+          example: 1
+        name:
+          type: string
+          maxLength: 32
+          example: Super single
+        description:
+          type: string
+          maxLength: 256
+          example: The best single
+      required:
+        - id
+        - name
