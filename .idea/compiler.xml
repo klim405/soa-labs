@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="music-bands-service" />
+        <module name="band-grammy-service" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="grammy" target="17" />
+      <module name="music-band-service" target="17" />
+      <module name="MusicBands" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="MusicBands" options="-parameters" />
+      <module name="band-grammy-service" options="-parameters" />
+      <module name="grammy" options="-parameters" />
+      <module name="music-band-service" options="-parameters" />
+      <module name="music-bands-service" options="-parameters" />
+    </option>
+  </component>
+</project>
