@@ -1,3 +1,7 @@
 [submodule "band-grammy-service"]
  path = band-grammy-service
- url = https://github.com/iosa34/band-grammy-service.git
+ url = https://github.com/Diosa34/band-grammy-service.git
+
+[submodule "music-bands-service"]
+ path = music-bands-service
+ url = https://github.com/Diosa34/music-bands-service.git
